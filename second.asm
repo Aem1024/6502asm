@@ -32,18 +32,19 @@ UP:
     LDA #$00
     STA $FF
    
-    LDA #$1F
-    SBC $01
-    STA $1F
+    SEC
+    LDA $01
+    SBC #$20
+    STA $01
     RTS
 
 DOWN:
     LDA #$00
     STA $FF
-   
+
     LDA #$1F
     ADC $01
-    STA $1F
+    STA $01
     RTS
 
 LEFT:
