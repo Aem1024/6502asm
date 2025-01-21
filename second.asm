@@ -1,24 +1,80 @@
+;$01 position one
+;$10 direction (1 up 2 right 3 down 4 left)
+
 START:
     LDA #01
-    STA $20F
+    STA $200
     JMP LOOP
 
-LOOP:
+DIR:
+    LDA $01
+    STA $02
+
+    LDA #$64
+    CMP $FF
+    BEQ RIGHT
+
     LDA #$73
     CMP $FF
-    BEQ NEWPIX
-    JMP LOOP
+    BEQ DOWN
 
-NEWPIX:
+    LDA #$77
+    CMP $FF
+    BEQ UP
+
+    LDA #$61
+    CMP $FF
+    BEQ LEFT
+
+    RTS 
+
+UP: 
     LDA #$00
     STA $FF
+   
+    LDA #$1F
+    SBC $01
+    RTS
+
+DOWN:
+    LDA #$00
+    STA $FF
+   
+    LDA #$1F
+    ADC $01
+    RTS
+
+LEFT:
+    LDA #$00
+    STA $FF
+  
+    DEC $01
+    RTS
+
+RIGHT:
+    LDA #$00
+    STA $FF
+
+    INC $01
+    RTS
+    
+LOOP:
+    JSR DIR
+    JSR DRAW
+    JMP LOOP
+
+DRAW:
+    LDX $02
+    CPX $01
+    BNE CLR
+
     LDX $01
+    LDA #01
+    STA $200,X
+    RTS
+
+CLR:
+    LDX $02
     LDA #00
-    STA $20F,X
-    TXA
-    ADC #32
-    STA $01
-    TAX
-    LDA #$01
-    STA $20F,X
+    STA $200,X
     RTS
