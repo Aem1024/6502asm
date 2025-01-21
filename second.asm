@@ -34,6 +34,7 @@ UP:
    
     LDA #$1F
     SBC $01
+    STA $1F
     RTS
 
 DOWN:
@@ -42,6 +43,7 @@ DOWN:
    
     LDA #$1F
     ADC $01
+    STA $1F
     RTS
 
 LEFT:
