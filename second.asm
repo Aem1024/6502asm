@@ -2,13 +2,19 @@
 ;$10 direction (1 up 2 right 3 down 4 left)
 
 START:
+    LDA #00
+    STA $10
+    LDA #$02
+    STA $11
     LDA #01
     STA $200
     JMP LOOP
 
 DIR:
-    LDA $01
+    LDA $10
     STA $02
+    LDA $11
+    STA $03    
 
     LDA #$64
     CMP $FF
@@ -32,19 +38,37 @@ UP:
     LDA #$00
     STA $FF
    
-    SEC
     LDA $01
+    SEC
     SBC #$20
     STA $01
+    BCC UPUP
     RTS
+
+UPUP:
+    DEC $11
+    RTS
+
 
 DOWN:
     LDA #$00
     STA $FF
+    
+    LDA $10
+    STA $02
+    LDA $11
+    STA $03
+    
+    LDA $10
+    CLC
+    ADC #$20
 
-    LDA #$1F
-    ADC $01
-    STA $01
+    STA $10
+    BCS DOWNDOWN
+    RTS
+
+DOWNDOWN:
+    INC $11
     RTS
 
 LEFT:
@@ -68,16 +92,16 @@ LOOP:
 
 DRAW:
     LDX $02
-    CPX $01
+    CPX $10
     BNE CLR
 
-    LDX $01
+    LDY $01
     LDA #01
-    STA $200,X
+    STA ($10), Y
     RTS
 
 CLR:
-    LDX $02
+    LDY $01
     LDA #00
-    STA $200,X
+    STA ($02), Y
     RTS
