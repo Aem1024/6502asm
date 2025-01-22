@@ -11,10 +11,12 @@ START:
     JMP LOOP
 
 DIR:
-    LDA $10
+    LDA $01
     STA $02
+    LDA $10
+    STA $03
     LDA $11
-    STA $03    
+    STA $04   
 
     LDA #$64
     CMP $FF
@@ -55,11 +57,6 @@ DOWN:
     STA $FF
     
     LDA $10
-    STA $02
-    LDA $11
-    STA $03
-    
-    LDA $10
     CLC
     ADC #$20
 
@@ -92,6 +89,9 @@ LOOP:
 
 DRAW:
     LDX $02
+    CPX $1
+    BNE CLR
+    LDX $03
     CPX $10
     BNE CLR
 
@@ -101,7 +101,7 @@ DRAW:
     RTS
 
 CLR:
-    LDY $01
+    LDY $02
     LDA #00
-    STA ($02), Y
+    STA ($03), Y
     RTS
